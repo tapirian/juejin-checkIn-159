@@ -1,0 +1,39 @@
+name: 定时签到任务
+
+on:
+  schedule:
+    # 每天 UTC 时间晚上 11:00（北京时间早上 8:00）运行一次
+    - cron: "0 0 * * *"
+  
+  workflow_dispatch:  # 添加手动触发器
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v3
+
+    - name: 设置 Node.js 环境
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18' # 使用 Node.js 18 版本
+
+    - name: 安装依赖并执行签到脚本（带重试）
+      run: |
+        retry_count=0
+        max_retries=3
+        until [ $retry_count -ge $max_retries ]
+        do
+          npm install -g pnpm && pnpm install && node index.js && break
+          retry_count=$((retry_count+1))
+          echo "尝试失败，第 $retry_count 次重试..."
+          sleep 10  # 重试间隔
+        done
+        if [ $retry_count -ge $max_retries ]; then
+          echo "任务失败，重试 $max_retries 次仍未成功"
+          exit 1
+        fi
+      env:
+        QYWX_ROBOT: ${{ secrets.QYWX_ROBOT }}
