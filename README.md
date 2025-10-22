@@ -61,5 +61,5 @@ docker-compose up -d
 | 月份 | *   | 每个月                         |
 | 星期 | *   | 每一天（0 和 7 都表示星期天）  |
 
-## 本项目fork自 https://github.com/Shadownc/juejin-checkIn
-2025-02-07
+## index_bak.js
+使用`playwright`修改脚本 **未测试**

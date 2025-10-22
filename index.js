@@ -128,6 +128,9 @@ const main = async () => {
             args: [
                 "--no-sandbox",
             ],
+            // 本地运行报错：Could not find Chrome (ver. 127.0.6533.119). This can occur if either
+            // 取消注释 路径修改为你的chrome.exe所在的文件夹路径 windows一般默认是这个
+            // executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
             executablePath: fs.existsSync("/usr/bin/chromium")
                 ? "/usr/bin/chromium"
                 : undefined,
